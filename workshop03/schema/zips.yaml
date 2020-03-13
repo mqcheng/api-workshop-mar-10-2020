@@ -1,0 +1,311 @@
+openapi: "3.0.3"
+info:
+  title: "ZIPs REST API"
+  description: "My first API"
+  version: "v1.0"
+
+# this is a comment
+servers:
+  - url: http://localhost:3000
+    description: "Development server"
+
+components:
+  schemas:
+    states:
+      type: string
+      enum:
+        [
+          "MA",
+          "RI",
+          "NH",
+          "ME",
+          "VT",
+          "CT",
+          "NY",
+          "NJ",
+          "PA",
+          "DE",
+          "DC",
+          "MD",
+          "VA",
+          "WV",
+          "NC",
+          "SC",
+          "GA",
+          "FL",
+          "AL",
+          "TN",
+          "MS",
+          "KY",
+          "OH",
+          "IN",
+          "MI",
+          "IA",
+          "WI",
+          "MN",
+          "SD",
+          "ND",
+          "MT",
+          "IL",
+          "MO",
+          "KS",
+          "NE",
+          "LA",
+          "AR",
+          "OK",
+          "TX",
+          "CO",
+          "WY",
+          "ID",
+          "UT",
+          "AZ",
+          "NM",
+          "NV",
+          "CA",
+          "HI",
+          "OR",
+          "WA",
+          "AK",
+        ]
+    city-form:
+      type: object
+      required: ["city","pop","lat","lng","state"]
+      properties:
+        city:
+          type: string
+          description: City name
+        loc:
+          type: string
+          description: City lat, long in csv
+        lat:
+          type: number
+          description: City lat
+        lng:
+          type: number
+          description: City log
+        pop:
+          type: number
+          description: City population
+        state:
+          type: string
+          enum:
+            [
+              "MA",
+              "RI",
+              "NH",
+              "ME",
+              "VT",
+              "CT",
+              "NY",
+              "NJ",
+              "PA",
+              "DE",
+              "DC",
+              "MD",
+              "VA",
+              "WV",
+              "NC",
+              "SC",
+              "GA",
+              "FL",
+              "AL",
+              "TN",
+              "MS",
+              "KY",
+              "OH",
+              "IN",
+              "MI",
+              "IA",
+              "WI",
+              "MN",
+              "SD",
+              "ND",
+              "MT",
+              "IL",
+              "MO",
+              "KS",
+              "NE",
+              "LA",
+              "AR",
+              "OK",
+              "TX",
+              "CO",
+              "WY",
+              "ID",
+              "UT",
+              "AZ",
+              "NM",
+              "NV",
+              "CA",
+              "HI",
+              "OR",
+              "WA",
+              "AK",
+            ]
+    city:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id
+        city:
+          type: string
+          description: City name
+        loc:
+          type: array
+          items:
+            type: number
+          maxItems: 2
+          minItems: 2
+        pop:
+          type: number
+          minimum: 10
+        state:
+          type: string
+          enum:
+            [
+              "MA",
+              "RI",
+              "NH",
+              "ME",
+              "VT",
+              "CT",
+              "NY",
+              "NJ",
+              "PA",
+              "DE",
+              "DC",
+              "MD",
+              "VA",
+              "WV",
+              "NC",
+              "SC",
+              "GA",
+              "FL",
+              "AL",
+              "TN",
+              "MS",
+              "KY",
+              "OH",
+              "IN",
+              "MI",
+              "IA",
+              "WI",
+              "MN",
+              "SD",
+              "ND",
+              "MT",
+              "IL",
+              "MO",
+              "KS",
+              "NE",
+              "LA",
+              "AR",
+              "OK",
+              "TX",
+              "CO",
+              "WY",
+              "ID",
+              "UT",
+              "AZ",
+              "NM",
+              "NV",
+              "CA",
+              "HI",
+              "OR",
+              "WA",
+              "AK",
+            ]
+paths:
+  /api/city:
+    post:
+      description: Add a City
+      operationId: addCity
+      requestBody: 
+        required: true
+        content: 
+         application/x-www-form-urlencoded:
+          schema: 
+            $ref: "#/components/schemas/city-form"
+         application/json:
+          schema: 
+            $ref: "#/components/schemas/city"
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string 
+                    required: ["message"]
+
+  /api/state/{stateId}:
+    get:
+      description: Get cities in a state
+      operationId: getCitiesFromState
+      parameters:
+        - name: stateId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/states"
+        - name: offset
+          in: query
+          schema:
+            type: number
+            minimum: 0
+        - name: limit
+          in: query
+          schema:
+            type: number
+            minimum: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/city"
+
+  /api/states:
+    get:
+      description: Get a list of all the states
+      operationId: getStates
+      responses:
+        200:
+          description: Default result representation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/state/{stateId}/count:
+    get:
+      description: Get count in cities
+      operationId: getCountInCity
+      parameters:
+        - name: stateId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/states"
+      responses:
+        200:
+          description: Default result representation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  state:
+                    type: string
+                  numOfCities:
+                    type: number
+                  timestamp:
+                    type: string

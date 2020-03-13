@@ -39,7 +39,40 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Start of workshop
-// TODO 2/2 Copy your routes from workshop02 here
+
+// Mandatory workshop
+// TODO GET /api/states
+
+
+
+
+// TODO GET /api/state/:state
+
+
+
+
+// TODO GET /api/city/:cityId
+
+
+
+// TODO POST /api/city
+
+
+
+
+// Optional workshop
+// TODO HEAD /api/state/:state
+// IMPORTANT: HEAD must be place before GET for the
+// same resource. Otherwise the GET handler will be invoked
+
+
+
+// TODO GET /state/:state/count
+
+
+
+// TODO GET /city/:name
+
 
 
 // End of workshop
