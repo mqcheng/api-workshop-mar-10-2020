@@ -79,7 +79,7 @@ app.get('/information', (req, resp) => {
     //TODO 1/3: Add query parameters for OpenWeatherMap
     //Use the exact query parameter names as keys
     //Weather for city is in cityName variable
-    //API key is in keys.weather
+    //API key is in keys.weather ok?
     const params = {
         q: cityName,
         appid: keys.weather
